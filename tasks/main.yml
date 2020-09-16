@@ -2,15 +2,25 @@
 ---
 - name: install
   apt:
-    name: "{{ item }}"
+    name: "{{ fail2ban_dependencies }}"
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
     cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
-  with_items: "{{ fail2ban_dependencies }}"
   tags:
     - configuration
     - fail2ban
     - fail2ban-install
+
+- name: remove configuration file - /etc/fail2ban/jail.d/defaults-debian.conf
+  file:
+    state: absent
+    path: /etc/fail2ban/jail.d/defaults-debian.conf
+  notify: restart fail2ban
+  tags:
+    - configuration
+    - fail2ban
+    - fail2ban-configuration
+    - fail2ban-configuration-delete
 
 - name: update configuration file - /etc/fail2ban/fail2ban.local
   template:
@@ -24,6 +34,7 @@
     - configuration
     - fail2ban
     - fail2ban-configuration
+    - fail2ban-configuration-update
 
 - name: update configuration file - /etc/fail2ban/jail.local
   template:
@@ -37,6 +48,7 @@
     - configuration
     - fail2ban
     - fail2ban-configuration
+    - fail2ban-configuration-update
 
 - name: copy filters
   copy:
@@ -83,8 +95,8 @@
 - name: start and enable service
   service:
     name: fail2ban
-    state: started
-    enabled: true
+    state: "{{ service_default_state | default('started') }}"
+    enabled: "{{ service_default_enabled | default(true) | bool }}"
   tags:
     - configuration
     - fail2ban

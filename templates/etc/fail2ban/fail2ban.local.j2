@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+{{ ansible_managed | comment }}
 
 # Overrides values from the fail2ban.conf configuration file.
 #
@@ -17,3 +17,5 @@ syslog-facility = {{ fail2ban_syslog_facility }}
 socket = {{ fail2ban_socket }}
 
 pidfile = {{ fail2ban_pidfile }}
+
+dbpurgeage = {{ fail2ban_dbpurgeage }}

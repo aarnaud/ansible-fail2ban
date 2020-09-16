@@ -1,21 +1,22 @@
-## fail2ban
+# fail2ban
 
-[![Build Status](https://travis-ci.org/Oefenweb/ansible-fail2ban.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-fail2ban) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-fail2ban-blue.svg)](https://galaxy.ansible.com/tersmitten/fail2ban)
+[![Build Status](https://travis-ci.org/Oefenweb/ansible-fail2ban.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-fail2ban) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-fail2ban-blue.svg)](https://galaxy.ansible.com/Oefenweb/fail2ban)
 
 Set up fail2ban in Debian-like systems.
 
-#### Requirements
+## Requirements
 
 None
 
-#### Variables
+## Variables
 
-- `fail2ban_loglevel`: [default: `3`, or `INFO` in Ubuntu 16.04]: Sets the loglevel output (e.g. `1 = ERROR`, `2 = WARN`, `3 = INFO`, `4 = DEBUG`)
+- `fail2ban_loglevel`: [default: `3`, or `INFO` in newer versions]: Sets the loglevel output (e.g. `1 = ERROR`, `2 = WARN`, `3 = INFO`, `4 = DEBUG`)
 - `fail2ban_logtarget`: [default: `/var/log/fail2ban.log`]: Sets the log target. This could be a file, SYSLOG, STDERR or STDOUT
 - `fail2ban_syslog_target`: [default: `/var/log/fail2ban.log`]:
 - `fail2ban_syslog_facility`: [default: `1`]:
 - `fail2ban_socket`: [default: `/var/run/fail2ban/fail2ban.sock`]: Sets the socket file, which is used to communicate with the daemon
 - `fail2ban_pidfile`: [default: `/var/run/fail2ban/fail2ban.pid`]: Sets the pid file, which is used to to store the process ID of the daemon (Only works on `fail2ban >= 0.8.9`)
+- `fail2ban_dbpurgeage`: [default: `86400`]: Sets age at which bans should be purged from the database
 
 - `fail2ban_ignoreips`: [default: `[127.0.0.1/8]`]: Which IP address/CIDR mask/DNS host should be ignored from fail2ban's actions
 - `fail2ban_bantime`: [default: `600`]: Sets the bantime
@@ -43,9 +44,9 @@ None
 
 None
 
-#### Example(s)
+## Example(s)
 
-##### Simple
+### Simple
 
 ```yaml
 ---
@@ -54,7 +55,7 @@ None
     - fail2ban
 ```
 
-##### Enable sshd filter (with non-default settings)
+### Enable sshd filter (with non-default settings)
 
 ```yaml
 ---
@@ -63,14 +64,14 @@ None
     - fail2ban
   vars:
     fail2ban_services:
-      # In Ubuntu 16.04 this is sshd
-      - name: ssh
+      # In older versions of Fail2Ban this is called ssh
+      - name: sshd
         port: 2222
         maxretry: 5
         bantime: -1
 ```
 
-##### Add custom filters (from outside the role)
+### Add custom filters (from outside the role)
 
 ```yaml
 ---
@@ -88,14 +89,14 @@ None
         findtime: 120
 ```
 
-#### License
+## License
 
 MIT
 
-#### Author Information
+## Author Information
 
 Mischa ter Smitten (based on work of [ANXS](https://github.com/ANXS))
 
-#### Feedback, bug-reports, requests, ...
+## Feedback, bug-reports, requests, ...
 
 Are [welcome](https://github.com/Oefenweb/ansible-fail2ban/issues)!
